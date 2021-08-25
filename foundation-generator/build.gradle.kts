@@ -22,8 +22,8 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("com.squareup:kotlinpoet:$kotlinPoetVersion")
     implementation("com.github.javafaker:javafaker:$javaFakerVersion")
-    compile("org.jetbrains.kotlinx:kotlinx-metadata-jvm:$kotlinxMetadataJvmVersion")
-    compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:$kotlinxMetadataJvmVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))

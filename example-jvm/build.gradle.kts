@@ -30,11 +30,11 @@ dependencies {
     kaptTest(project(":foundation-processor"))
 
     // ------- Dependencies for testing with published artifact
-    // implementation(kotlin("stdlib"))
-    // implementation("com.github.nhat-phan.foundation:foundation-jvm:$artifactVersion")
-    // compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
+     implementation(kotlin("stdlib"))
+     implementation("com.github.nhat-phan.foundation:foundation-jvm:$foundationVersion")
+     compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
 
-    // kapt("com.github.nhat-phan.foundation:foundation-processor:$artifactVersion")
+     kapt("com.github.nhat-phan.foundation:foundation-processor:$foundationVersion")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))

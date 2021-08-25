@@ -1,11 +1,12 @@
 package net.ntworld.foundation
 
-import kotlinx.io.ByteBuffer
+
+import kotlin.ByteArray
 
 interface MessageAttribute {
     val dataType: String
 
-    val binaryValue: ByteBuffer?
+    val binaryValue: ByteArray?
 
     val stringValue: String?
 }

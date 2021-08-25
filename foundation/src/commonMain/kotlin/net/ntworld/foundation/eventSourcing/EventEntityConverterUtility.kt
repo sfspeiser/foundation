@@ -1,6 +1,6 @@
 package net.ntworld.foundation.eventSourcing
 
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
 import net.ntworld.foundation.exception.DecryptException
 import net.ntworld.foundation.Infrastructure
 
@@ -26,7 +26,7 @@ object EventEntityConverterUtility {
         fields: Map<String, Setting>,
         raw: String
     ): ProcessResult {
-        val jsonObject = json.parse(JsonObject.serializer(), raw)
+        val jsonObject = json.decodeFromString(JsonObject.serializer(), raw)
         val dataMap = mutableMapOf<String, JsonElement>()
         val encryptedMap = mutableMapOf<String, JsonElement>()
         val metadataMap = mutableMapOf<String, JsonElement>()
@@ -52,8 +52,8 @@ object EventEntityConverterUtility {
         this.encrypt(infrastructure, json, encryptedMap, dataMap)
 
         return ProcessResult(
-            data = json.stringify(JsonObject.serializer(), JsonObject(dataMap)),
-            metadata = json.stringify(JsonObject.serializer(), JsonObject(metadataMap))
+            data = json.encodeToString(JsonObject.serializer(), JsonObject(dataMap)),
+            metadata = json.encodeToString(JsonObject.serializer(), JsonObject(metadataMap))
         )
     }
 
@@ -64,8 +64,8 @@ object EventEntityConverterUtility {
         data: String,
         metadata: String
     ): String {
-        val dataObject = json.parse(JsonObject.serializer(), data)
-        val metadataObject = json.parse(JsonObject.serializer(), metadata)
+        val dataObject = json.decodeFromString(JsonObject.serializer(), data)
+        val metadataObject = json.decodeFromString(JsonObject.serializer(), metadata)
         val rawMap = mutableMapOf<String, JsonElement>()
 
         metadataObject.forEach { rawMap[it.key] = it.value }
@@ -86,7 +86,7 @@ object EventEntityConverterUtility {
             decrypt(infrastructure, json, fields, dataObject, rawMap)
         }
 
-        return json.stringify(JsonObject.serializer(), JsonObject(rawMap))
+        return json.encodeToString(JsonObject.serializer(), JsonObject(rawMap))
     }
 
     internal fun encrypt(
@@ -98,7 +98,7 @@ object EventEntityConverterUtility {
         if (map.isNotEmpty()) {
             val encryptor = infrastructure.root.encryptor()
             val encrypted = encryptor.encrypt(
-                json.stringify(JsonObject.serializer(), JsonObject(map))
+                json.encodeToString(JsonObject.serializer(), JsonObject(map))
             )
             data[ENCRYPTED_CIPHER_ID_KEY] = JsonPrimitive(encryptor.cipherId)
             data[ENCRYPTED_ALGORITHM_KEY] = JsonPrimitive(encryptor.algorithm)
@@ -117,13 +117,13 @@ object EventEntityConverterUtility {
         val algorithm = data[ENCRYPTED_ALGORITHM_KEY]
         val encrypted = data[ENCRYPTED_DATA_KEY]
         val encryptor = infrastructure.root.encryptor(
-            cipherId = cipherId!!.content,
-            algorithm = algorithm!!.content
+            cipherId = cipherId!!.toString(),
+            algorithm = algorithm!!.toString()
         )
 
         try {
-            val plain = encryptor.decrypt(encrypted!!.content)
-            val plainMap = json.parse(JsonObject.serializer(), plain)
+            val plain = encryptor.decrypt(encrypted!!.toString())
+            val plainMap = json.decodeFromString(JsonObject.serializer(), plain)
             plainMap.forEach { raw[it.key] = it.value }
         } catch (exception: DecryptException) {
             val env = infrastructure.root.environment()

@@ -1,15 +1,15 @@
 plugins {
     // "org.jetbrains.kotlin.jvm"
-    kotlin("jvm") version "1.3.31" apply false
+    kotlin("jvm") version "1.5.20" apply false
 
     // "org.jetbrains.kotlin.kapt"
-    kotlin("kapt") version "1.3.31" apply false
+    kotlin("kapt") version "1.5.20" apply false
 
     // "kotlinx-serialization"
-    id("kotlinx-serialization") version "1.3.31" apply false
+    id("kotlinx-serialization") version "1.5.20" apply false
 
     // "kotlin-multiplatform"
-    id("kotlin-multiplatform") version "1.3.31" apply false
+    id("kotlin-multiplatform") version "1.5.20" apply false
 }
 
 subprojects {
@@ -20,7 +20,8 @@ subprojects {
     }
 
     if (name == "foundation") {
-        apply(plugin = "kotlin-multiplatform")
+        apply(plugin = "org.jetbrains.kotlin.jvm")
+        apply(plugin = "org.jetbrains.kotlin.kapt")
         apply(plugin = "kotlinx-serialization")
     }
 
