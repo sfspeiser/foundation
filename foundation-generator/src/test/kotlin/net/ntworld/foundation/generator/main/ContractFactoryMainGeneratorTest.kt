@@ -5,6 +5,7 @@ import net.ntworld.foundation.generator.TestSuite
 import net.ntworld.foundation.generator.type.ClassInfo
 import kotlin.test.Test
 
+
 class ContractFactoryMainGeneratorTest : TestSuite() {
     @Test
     fun `testGenerate Empty`() {

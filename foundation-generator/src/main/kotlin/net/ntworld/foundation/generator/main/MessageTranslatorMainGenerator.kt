@@ -57,7 +57,7 @@ object MessageTranslatorMainGenerator {
                 PropertySpec.builder("json", Framework.Json)
                     .addModifiers(KModifier.PRIVATE)
                     .initializer(
-                        "Json(%T.Stable.copy(strictMode = false))",
+                        "Json{ignoreUnknownKeys = true}",
                         Framework.JsonConfiguration
                     )
                     .build()
@@ -141,7 +141,7 @@ object MessageTranslatorMainGenerator {
                 .addModifiers(KModifier.OVERRIDE)
                 .addParameter("message", Framework.Message)
                 .returns(setting.contract.toClassName())
-                .addStatement("return json.parse(%T.serializer(), message.body)", implementation.toClassName())
+                .addStatement("return json.decodeFromString(%T.serializer(), message.body)", implementation.toClassName())
                 .build()
         )
     }
@@ -189,9 +189,9 @@ object MessageTranslatorMainGenerator {
         code.indent()
 
         if (setting.contract == implementation) {
-            code.add("json.stringify(%T.serializer(), input),\n", implementation.toClassName())
+            code.add("json.encodeToString(%T.serializer(), input),\n", implementation.toClassName())
         } else {
-            code.add("json.stringify(%T.serializer(), make(input)),\n", implementation.toClassName())
+            code.add("json.encodeToString(%T.serializer(), make(input)),\n", implementation.toClassName())
         }
         code.add("attributes\n")
 

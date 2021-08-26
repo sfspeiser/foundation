@@ -49,7 +49,7 @@ object EventConverterMainGenerator {
             .addProperty(
                 PropertySpec.builder("json", Framework.Json)
                     .addModifiers(KModifier.PRIVATE)
-                    .initializer("Json(%T.Stable.copy(strictMode = false))",
+                    .initializer("Json{ignoreUnknownKeys = true}",
                         Framework.JsonConfiguration
                     )
                     .build()
@@ -72,7 +72,7 @@ object EventConverterMainGenerator {
         val eventEntityTarget = Utility.findEventEntityTarget(setting)
         val code = CodeBlock.builder()
 
-        code.add("val raw = json.stringify(%T.serializer(), event)\n", setting.implementation.toClassName())
+        code.add("val raw = json.encodeToString(%T.serializer(), event)\n", setting.implementation.toClassName())
         code.add(
             "val processed = %T.processRawJson(infrastructure, json, fields, raw)\n",
             Framework.EventEntityConverterUtility
@@ -105,7 +105,7 @@ object EventConverterMainGenerator {
             "val raw = %T.rebuildRawJson(infrastructure, json, fields, eventEntity.data, eventEntity.metadata)\n",
             Framework.EventEntityConverterUtility
         )
-        code.add("return json.parse(%T.serializer(), raw)\n", setting.implementation.toClassName())
+        code.add("return json.decodeFromString(%T.serializer(), raw)\n", setting.implementation.toClassName())
 
         return FunSpec.builder("fromEventEntity")
             .addModifiers(KModifier.OVERRIDE)

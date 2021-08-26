@@ -57,7 +57,7 @@ object ContractOnlyModeGenerator {
         val result = StringBuilder()
         for (item in list) {
             result.append(item.toString())
-            result.appendln()
+            result.appendLine()
         }
         return result.toString()
     }

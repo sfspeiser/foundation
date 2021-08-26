@@ -1,5 +1,6 @@
 package net.ntworld.foundation.processor.util
 
+import java.util.*
 import javax.annotation.processing.ProcessingEnvironment
 
 internal data class ProcessorSetting(
@@ -61,7 +62,7 @@ internal data class ProcessorSetting(
 
         private fun readIsDev(processingEnv: ProcessingEnvironment): Boolean {
             val dev = processingEnv.options[FrameworkProcessor.DEV_OPTION_NAME]
-            if (null !== dev && DEV_OPTION_NAME.contains(dev.toLowerCase().trim())) {
+            if (null !== dev && DEV_OPTION_NAME.contains(dev.lowercase(Locale.getDefault()).trim())) {
                 return true
             }
             return false

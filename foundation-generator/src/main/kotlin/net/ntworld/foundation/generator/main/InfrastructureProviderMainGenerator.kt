@@ -10,6 +10,7 @@ import net.ntworld.foundation.generator.type.ClassInfo
 import net.ntworld.foundation.generator.type.Constructor
 import net.ntworld.foundation.generator.util.ConstructorComposer
 import net.ntworld.foundation.generator.util.MultiPlatformCodeGenerator
+import java.util.*
 import kotlin.reflect.KClass
 
 class InfrastructureProviderMainGenerator {
@@ -229,7 +230,7 @@ class InfrastructureProviderMainGenerator {
     }
 
     private fun findVariableNames(packageName: String, className: String): String {
-        val simpleName = className.decapitalize()
+        val simpleName = className.replaceFirstChar { it.lowercase(Locale.getDefault()) }
         if (!this.variableNames.contains(simpleName)) {
             this.variableNames.add(simpleName)
             return simpleName

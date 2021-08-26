@@ -5,6 +5,7 @@ import com.squareup.kotlinpoet.*
 import net.ntworld.foundation.generator.Framework
 import net.ntworld.foundation.generator.GeneratorOutput
 import org.junit.Test
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KVisibility
 
@@ -113,7 +114,11 @@ class FakerRelatedSourceGenerator {
         val fakedTypeObjectSpec = TypeSpec.objectBuilder(Framework.FakerRelatedSource_FakedData)
 
         data.forEach {
-            val groupObjectSpec = TypeSpec.objectBuilder(it.name.capitalize())
+            val groupObjectSpec = TypeSpec.objectBuilder(it.name.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            })
             it.items.forEach {
                 groupObjectSpec.addProperty(
                     PropertySpec
